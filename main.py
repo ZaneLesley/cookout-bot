@@ -79,10 +79,11 @@ async def on_raw_reaction_add(payload):
 
     if(channel_id == 1213003210416062484):          #ID for Tribunal
         if(str(emoji) == '\u2705'):
-            await points.add_points(username, bot)
+            await points.change_points(username, bot, 5)
         
         if(str(emoji) == '\u274c'):
-            await points.remove_points(username, bot)
+            await points.change_points(username, bot, -5)
+        await points.change_points(user, bot, 2)
 
 @bot.tree.command(name="adduser", description="adds a user to the json")
 @has_permissions(administrator=True)
@@ -105,10 +106,11 @@ async def on_raw_reaction_remove(payload):
 
     if(channel_id == 1213003210416062484):          #ID for Tribunal
         if(str(emoji) == '\u2705'):
-            await points.remove_points(username, bot)
+            await points.change_points(username, bot, -5)
         
         if(str(emoji) == '\u274c'):
-            await points.add_points(username, bot)
+            await points.change_points(username, bot, 5)
+        await points.change_points(user, bot, 2)
 
 async def update_point_message(bot):
     channel = bot.get_channel(1215666835647631441)           #id for bank

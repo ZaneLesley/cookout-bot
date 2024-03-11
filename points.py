@@ -4,7 +4,7 @@ import json
 from main import update_point_message
 
 
-async def add_points(user: str, bot):
+async def change_points(user: str, bot, value: int):
     data = {}
     try:
         with open ("points.json", "r") as file:
@@ -13,27 +13,11 @@ async def add_points(user: str, bot):
         print(e)
 
     if user in data:
-        data[user]["points"] += 5
+        data[user]["points"] += value
 
     with open("points.json", "w") as file:
         json.dump(data, file, indent=4)
     
-    await update_point_message(bot)
-
-async def remove_points(user: str, bot):
-    data = {}
-    try:
-        with open ("points.json", "r") as file:
-            data = json.load(file)
-    except Exception as e:
-        print(e)
-
-    if user in data:
-        data[user]["points"] -= 5
-
-    with open("points.json", "w") as file:
-        json.dump(data, file, indent=4)
-
     await update_point_message(bot)
 
 async def json_init(user: discord.Member, bot):
