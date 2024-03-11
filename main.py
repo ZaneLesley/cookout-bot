@@ -8,6 +8,7 @@ from discord.ext.commands import has_permissions
 from responses import get_response
 import points
 import json
+from time import sleep
 
 SERVER_ID = 1155965000255545384
 
@@ -73,17 +74,17 @@ async def on_raw_reaction_add(payload):
     channel = bot.get_channel(1213003210416062484)
     message = await channel.fetch_message(message_id)
     username = message.author.name
+    react_user = bot.get_user(user).name
 
     if (user == 767548847219408927) or (user == message.author.id):
         return
 
     if(channel_id == 1213003210416062484):          #ID for Tribunal
         if(str(emoji) == '\u2705'):
-            await points.change_points(username, bot, 5)
+            await points.change_points(user=username, react_user=react_user, bot=bot, value=5,react_value= 2)
         
         if(str(emoji) == '\u274c'):
-            await points.change_points(username, bot, -5)
-        await points.change_points(user, bot, 2)
+            await points.change_points(user=username, react_user=react_user, bot=bot, value=-5,react_value= 2)
 
 @bot.tree.command(name="adduser", description="adds a user to the json")
 @has_permissions(administrator=True)
@@ -100,17 +101,17 @@ async def on_raw_reaction_remove(payload):
     channel = bot.get_channel(1213003210416062484)
     message = await channel.fetch_message(message_id)
     username = message.author.name
+    react_user = bot.get_user(user).name
     
     if (user == 767548847219408927) or (user == message.author.id):
         return
 
     if(channel_id == 1213003210416062484):          #ID for Tribunal
         if(str(emoji) == '\u2705'):
-            await points.change_points(username, bot, -5)
+            await points.change_points(user=username, react_user=react_user, bot=bot, value=-5,react_value= -2)
         
         if(str(emoji) == '\u274c'):
-            await points.change_points(username, bot, 5)
-        await points.change_points(user, bot, 2)
+            await points.change_points(user=username, react_user=react_user, bot=bot, value=5,react_value= -2)
 
 async def update_point_message(bot):
     channel = bot.get_channel(1215666835647631441)           #id for bank

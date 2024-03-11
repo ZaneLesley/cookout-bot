@@ -4,7 +4,7 @@ import json
 from main import update_point_message
 
 
-async def change_points(user: str, bot, value: int):
+async def change_points(user: str, react_user: str, bot, value: int, react_value: int):
     data = {}
     try:
         with open ("points.json", "r") as file:
@@ -12,8 +12,14 @@ async def change_points(user: str, bot, value: int):
     except Exception as e:
         print(e)
 
+    print(react_user, flush=True)
+    
     if user in data:
         data[user]["points"] += value
+
+    if react_user in data:
+        print("hit")
+        data[react_user]["points"] += react_value
 
     with open("points.json", "w") as file:
         json.dump(data, file, indent=4)
