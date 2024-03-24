@@ -92,6 +92,13 @@ async def adduser(interaction: discord.Interaction, user: discord.Member):
     await points.json_init(user=user, bot=bot)
     await interaction.response.send_message(f"user <@{user.id}> was added to json.")
 
+@bot.tree.command(name='edit', description='Change the value of a users point')
+@has_permissions(administrator=True)
+async def edit(interaction: discord.Interaction, user: discord.Member, value: int):
+        username = user.name
+        await points.change_points(bot=bot, user=username, value=value, react_user=None, react_value=None)
+        await interaction.response.send_message(f"user <@{user.id}> was given {value} points")
+
 @bot.event
 async def on_raw_reaction_remove(payload):
     message_id = payload.message_id
@@ -124,7 +131,7 @@ async def update_point_message(bot):
     message_lines.append("# Bank:")
     message_lines.append("-------------------------")
     for user in data:   
-        message_lines.append(f"{user}'s cash: {data[user]['points']}\n")
+        message_lines.append(f"{user}'s points: {data[user]['points']} points \n")
     
     message = "\n".join(message_lines)
 
